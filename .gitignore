@@ -22,3 +22,6 @@ yarn-error.log*
 
 /server/config.js
 /server/data
+/src/mannir/config.js
+/src/mannir/data
+/src/mannir/eportal/*
