@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-import SheetJSApp from './mannir/mannirexcel'
-import * as pdf from './mannir/mannirpdf'
+// import SheetJSApp from './mannir/mannirexcel'
+// import * as pdf from './mannir/mannirpdf'
+// import * as pdf from './mannir/eportal/ikcoe_results'
+import ExamResults from './mannir/eportal/examresults'
+// import App1 from './mannir/demos/dsheet'
+// import ComponentSheet from './mannir/demos/ComponentSheet';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Mannir eSystems Limited</h1>
-        </header>
-        <p className="App-intro">
-          
-        <SheetJSApp />
-
-        </p>
+      <div>
+        <ExamResults />
       </div>
     );
   }

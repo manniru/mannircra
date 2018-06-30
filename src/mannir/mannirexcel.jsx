@@ -10,24 +10,24 @@ var XLSX = require('xlsx');
 
 
 const postData = (url, data) => {
-    // Default options are marked with *
-    return fetch(url, {
-      body: JSON.stringify(data), // must match 'Content-Type' header
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, same-origin, *omit
-      headers: {
-        'user-agent': 'Mozilla/4.0 MDN Example',
-        'content-type': 'application/json'
-      },
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, cors, *same-origin
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // *client, no-referrer
-    })
-    .then(response => response.json()) // parses response to JSON
-  }
-  
-  
+	// Default options are marked with *
+	return fetch(url, {
+		body: JSON.stringify(data), // must match 'Content-Type' header
+		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+		credentials: 'same-origin', // include, same-origin, *omit
+		headers: {
+			'user-agent': 'Mozilla/4.0 MDN Example',
+			'content-type': 'application/json'
+		},
+		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		mode: 'cors', // no-cors, cors, *same-origin
+		redirect: 'follow', // manual, *follow, error
+		referrer: 'no-referrer', // *client, no-referrer
+	})
+		.then(response => response.json()) // parses response to JSON
+}
+
+
 
 
 class SheetJSApp extends React.Component {
@@ -47,22 +47,22 @@ class SheetJSApp extends React.Component {
 		reader.onload = (e) => {
 			/* Parse data */
 			const bstr = e.target.result;
-			const wb = XLSX.read(bstr, {type:rABS ? 'binary' : 'array'});
+			const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' });
 			/* Get first worksheet */
 			const wsname = wb.SheetNames[0];
 			const ws = wb.Sheets[wsname];
 			/* Convert array of arrays */
-			const data = XLSX.utils.sheet_to_json(ws, {header:1});
+			const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
 
-		// postData('https://ikcoemis.firebaseio.com/sheetsjs/.json', data)
-		// .then(data => console.log(data)) // JSON from `response.json()` call
-		// .catch(error => console.error(error))
+			// postData('https://ikcoemis.firebaseio.com/sheetsjs/.json', data)
+			// .then(data => console.log(data)) // JSON from `response.json()` call
+			// .catch(error => console.error(error))
 
 			/* Update state */
 			this.setState({ data: data, cols: make_cols(ws['!ref']) });
 		};
-		if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
+		if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
 	};
 	exportFile() {
 		/* convert state to workbook */
@@ -72,19 +72,21 @@ class SheetJSApp extends React.Component {
 		/* generate XLSX file and send to client */
 		XLSX.writeFile(wb, "sheetjs.xlsx")
 	};
-	render() { return (
-<DragDropFile handleFile={this.handleFile}>
-	<div className="row"><div className="col-xs-12">
-		<DataInput handleFile={this.handleFile} />
-	</div></div>
-	<div className="row"><div className="col-xs-12">
-		<button disabled={!this.state.data.length} className="btn btn-success" onClick={this.exportFile}>Export</button>
-	</div></div>
-	<div className="row"><div className="col-xs-12">
-		<OutTable data={this.state.data} cols={this.state.cols} />
-	</div></div>
-</DragDropFile>
-); };
+	render() {
+		return (
+			<DragDropFile handleFile={this.handleFile}>
+				<div className="row"><div className="col-xs-12">
+					<DataInput handleFile={this.handleFile} />
+				</div></div>
+				<div className="row"><div className="col-xs-12">
+					<button disabled={!this.state.data.length} className="btn btn-success" onClick={this.exportFile}>Export</button>
+				</div></div>
+				<div className="row"><div className="col-xs-12">
+					<OutTable data={this.state.data} cols={this.state.cols} />
+				</div></div>
+			</DragDropFile>
+		);
+	};
 };
 
 // if(typeof module !== 'undefined') module.exports = SheetJSApp
@@ -102,15 +104,18 @@ class DragDropFile extends React.Component {
 		this.onDrop = this.onDrop.bind(this);
 	};
 	suppress(evt) { evt.stopPropagation(); evt.preventDefault(); };
-	onDrop(evt) { evt.stopPropagation(); evt.preventDefault();
+	onDrop(evt) {
+		evt.stopPropagation(); evt.preventDefault();
 		const files = evt.dataTransfer.files;
-		if(files && files[0]) this.props.handleFile(files[0]);
+		if (files && files[0]) this.props.handleFile(files[0]);
 	};
-	render() { return (
-<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
-	{this.props.children}
-</div>
-	); };
+	render() {
+		return (
+			<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
+				{this.props.children}
+			</div>
+		);
+	};
 };
 
 /*
@@ -125,16 +130,20 @@ class DataInput extends React.Component {
 	};
 	handleChange(e) {
 		const files = e.target.files;
-		if(files && files[0]) this.props.handleFile(files[0]);
+		if (files && files[0]) this.props.handleFile(files[0]);
 	};
-	render() { return (
-<form className="form-inline">
-	<div className="form-group">
-		<label htmlFor="file">Spreadsheet</label>
-		<input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
-	</div>
-</form>
-	); };
+	render() {
+		return (
+			<div>
+				<form className="form-inline">
+					<div className="form-group">
+						<label htmlFor="file">Spreadsheet</label>
+						<input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+					</div>
+				</form>
+			</div>
+		);
+	};
 }
 
 /*
@@ -145,40 +154,41 @@ class DataInput extends React.Component {
 */
 class OutTable extends React.Component {
 	constructor(props) { super(props); };
-	render() { 
+	render() {
 
 
-	// 	postData('https://ikcoemis.firebaseio.com/sheetsjs/.json', this.props.data)
-    //   .then(data => console.log(data)) // JSON from `response.json()` call
-    //   .catch(error => console.error(error))
+		// 	postData('https://ikcoemis.firebaseio.com/sheetsjs/.json', this.props.data)
+		//   .then(data => console.log(data)) // JSON from `response.json()` call
+		//   .catch(error => console.error(error))
 
 		console.log(this.props.data);
-		
+
 		return (
-<div className="table-responsive">
-	<table className="table table-striped">
-		<thead>
-			<tr>{this.props.cols.map((c) => <th key={c.key}>{c.name}</th>)}</tr>
-		</thead>
-		<tbody>
-			{this.props.data.map((r,i) => <tr key={i}>
-				{this.props.cols.map(c => <td key={c.key}>{ r[c.key] }</td>)}
-			</tr>)}
-		</tbody>
-	</table>
-</div>
-	); };
+			<div className="table-responsive">
+				<table className="table table-striped">
+					<thead>
+						<tr>{this.props.cols.map((c) => <th key={c.key}>{c.name}</th>)}</tr>
+					</thead>
+					<tbody>
+						{this.props.data.map((r, i) => <tr key={i}>
+							{this.props.cols.map(c => <td key={c.key}>{r[c.key]}</td>)}
+						</tr>)}
+					</tbody>
+				</table>
+			</div>
+		);
+	};
 };
 
 /* list of supported file types */
 const SheetJSFT = [
 	"xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt", "ods", "fods", "uos", "sylk", "dif", "dbf", "prn", "qpw", "123", "wb*", "wq*", "html", "htm"
-].map(function(x) { return "." + x; }).join(",");
+].map(function (x) { return "." + x; }).join(",");
 
 /* generate an array of column objects */
 const make_cols = refstr => {
 	let o = [], C = XLSX.utils.decode_range(refstr).e.c + 1;
-	for(var i = 0; i < C; ++i) o[i] = {name:XLSX.utils.encode_col(i), key:i}
+	for (var i = 0; i < C; ++i) o[i] = { name: XLSX.utils.encode_col(i), key: i }
 	return o;
 };
 
